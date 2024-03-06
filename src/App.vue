@@ -3,23 +3,22 @@ import Header from "./components/Header.vue";
 import Balance from "./components/Balance.vue";
 import IncomeExpense from "./components/IncomeExpense.vue";
 import TransactionForm from "./components/TransactionForm.vue";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import TransactionList from "./components/TransactionList.vue";
 import { useToast } from "vue-toastification";
+import Modal from "./components/Modal.vue";
 
 const toast = useToast();
-const transactions = ref([
-  { id: "a1", text: "buy video game", amount: -200 },
-  { id: "a2", text: "pay check", amount: 300 },
-  { id: "a3", text: "sold laptop", amount: 400 },
-  { id: "a4", text: "buy chair", amount: -150 },
-]);
+
+const transactions = ref([]);
+const isModalOpen = ref(false);
 
 const total = computed(() => {
   return transactions.value.reduce((acc, transaction) => {
     return acc + transaction.amount;
   }, 0);
 });
+
 const income = computed(() => {
   return transactions.value
     .filter((transaction) => transaction.amount > 0)
@@ -27,6 +26,7 @@ const income = computed(() => {
       return acc + transaction.amount;
     }, 0);
 });
+
 const expense = computed(() => {
   return transactions.value
     .filter((transaction) => transaction.amount < 0)
@@ -37,6 +37,8 @@ const expense = computed(() => {
 
 function handleAddTransaction(transactionData) {
   transactions.value.push(transactionData);
+  saveToLocalStorage();
+  handleCloseModal();
   toast.success("New Transaction added", { timeout: 1500 });
 }
 
@@ -44,8 +46,22 @@ function handleDeleteTransaction(transactionId) {
   transactions.value = transactions.value.filter(
     (transaction) => transaction.id !== transactionId,
   );
+  saveToLocalStorage();
   toast.success("Transaction deleted", { timeout: 1500 });
 }
+
+function handleCloseModal() {
+  isModalOpen.value = false;
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem("transactions", JSON.stringify(transactions.value));
+}
+
+onMounted(() => {
+  const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
+  transactions.value = savedTransactions;
+});
 </script>
 
 <template>
@@ -58,9 +74,20 @@ function handleDeleteTransaction(transactionId) {
       <IncomeExpense :income="income" :expense="expense" />
       <TransactionList
         :transactions="transactions"
-        @deleted-transaction="handleDeleteTransaction"
+        @delete-transaction="handleDeleteTransaction"
       />
-      <TransactionForm @submitted-transaction="handleAddTransaction" />
+      <button
+        class="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 p-3 font-semibold text-white"
+        @:click="isModalOpen = !isModalOpen"
+      >
+        Add new transaction
+      </button>
+      <Modal
+        v-if="isModalOpen"
+        :close-modal="handleCloseModal"
+        :submit-transaction="handleAddTransaction"
+      />
+      <!-- <TransactionForm v-else @submit-transaction="handleAddTransaction" /> -->
     </div>
   </div>
 </template>

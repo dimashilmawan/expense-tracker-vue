@@ -7,16 +7,22 @@ defineProps({
   },
 });
 
-const emit = defineEmits(["deletedTransaction"]);
+const emit = defineEmits(["deleteTransaction"]);
 
 function handleDeleteTransaction(id) {
-  emit("deletedTransaction", id);
+  emit("deleteTransaction", id);
 }
 </script>
 <template>
   <div class="mt-6 w-full">
     <h2 class="text-lg font-medium">History</h2>
-    <ul class="mt-3 space-y-3">
+    <p
+      v-if="transactions.length === 0"
+      class="mt-4 rounded-md bg-white p-8 text-center text-lg font-semibold text-slate-600"
+    >
+      No Transaction
+    </p>
+    <ul v-else class="mt-3 h-60 space-y-3 overflow-y-scroll">
       <li
         v-for="transaction in transactions"
         :key="transaction.id"
