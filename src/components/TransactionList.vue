@@ -22,7 +22,7 @@ function handleDeleteTransaction(id) {
     >
       No Transaction
     </p>
-    <ul v-else class="mt-3 h-60 space-y-3 overflow-y-scroll">
+    <ul v-else class="mt-3 h-60 space-y-3 overflow-y-auto">
       <li
         v-for="transaction in transactions"
         :key="transaction.id"

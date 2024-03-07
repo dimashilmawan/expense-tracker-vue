@@ -11,7 +11,7 @@ import Modal from "./components/Modal.vue";
 const toast = useToast();
 
 const transactions = ref([]);
-const isModalOpen = ref(false);
+const showModal = ref(false);
 
 const total = computed(() => {
   return transactions.value.reduce((acc, transaction) => {
@@ -51,7 +51,7 @@ function handleDeleteTransaction(transactionId) {
 }
 
 function handleCloseModal() {
-  isModalOpen.value = false;
+  showModal.value = false;
 }
 
 function saveToLocalStorage() {
@@ -60,7 +60,7 @@ function saveToLocalStorage() {
 
 onMounted(() => {
   const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
-  transactions.value = savedTransactions;
+  if (savedTransactions) transactions.value = savedTransactions;
 });
 </script>
 
@@ -78,14 +78,14 @@ onMounted(() => {
       />
       <button
         class="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 p-3 font-semibold text-white"
-        @:click="isModalOpen = !isModalOpen"
+        @:click="showModal = true"
       >
         Add new transaction
       </button>
       <Modal
-        v-if="isModalOpen"
-        :close-modal="handleCloseModal"
-        :submit-transaction="handleAddTransaction"
+        :showModal
+        @close-modal="handleCloseModal"
+        @submit-transaction="handleAddTransaction"
       />
       <!-- <TransactionForm v-else @submit-transaction="handleAddTransaction" /> -->
     </div>

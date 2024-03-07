@@ -7,7 +7,7 @@ const amount = ref("");
 
 const toast = useToast();
 
-const props = defineProps(["submitTransaction"]);
+const emit = defineEmits(["submitTransaction"]);
 
 function handleSubmit() {
   if (!text.value || !amount.value) {
@@ -15,10 +15,10 @@ function handleSubmit() {
     return;
   }
 
-  props.submitTransaction({
+  emit("submitTransaction", {
     id: Math.random() * 10000,
     text: text.value,
-    amount: +amount.value,
+    amount: amount.value,
   });
 }
 </script>
@@ -41,7 +41,7 @@ function handleSubmit() {
         id="amount"
         step="0.01"
         class="rounded-md px-3 py-2"
-        v-model="amount"
+        v-model.number="amount"
       />
     </div>
     <button
