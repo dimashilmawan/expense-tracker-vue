@@ -80,7 +80,7 @@ function saveToLocalStorage() {
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col items-center bg-slate-100 pt-16">
+  <div class="flex min-h-screen flex-col items-center bg-slate-100 pt-10">
     <div class="mx-auto w-full max-w-sm">
       <Header />
       <Balance :total="total" />

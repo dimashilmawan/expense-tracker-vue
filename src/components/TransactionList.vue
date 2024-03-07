@@ -51,7 +51,7 @@ function handleDeleteTransaction(id) {
   </div>
 </template>
 
-<style>
+<style scoped>
 .list-move, /* apply transition to moving elements */
 .list-enter-active,
 .list-leave-active {
