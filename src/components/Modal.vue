@@ -8,7 +8,7 @@ defineProps(["showModal"]);
 </script>
 <template>
   <Teleport to="body">
-    <Transition name="modal" :duration="400">
+    <Transition name="modal" :duration="200">
       <div
         v-if="showModal"
         @click.self="$emit('closeModal')"
@@ -36,7 +36,7 @@ defineProps(["showModal"]);
 <style>
 .modal-enter-active,
 .modal-leave-active {
-  transition: all 0.4s ease;
+  transition: all 0.2s ease;
 }
 
 .modal-enter-from,
@@ -47,7 +47,7 @@ defineProps(["showModal"]);
 .modal-enter-active .content,
 .modal-leave-active .content {
   /* DELAY content to animate */
-  transition: all 0.3s ease 0.1s;
+  transition: all 0.1s ease 0.1s;
 }
 
 .modal-enter-from .content,

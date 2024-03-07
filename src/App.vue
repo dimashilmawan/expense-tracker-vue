@@ -10,7 +10,22 @@ import Modal from "./components/Modal.vue";
 
 const toast = useToast();
 
-const transactions = ref([]);
+// const transactions = ref([
+//   { id: 1223, text: "harapanku", amount: 200 },
+//   { id: 3434, text: "harapanku", amount: -300 },
+//   { id: 2323, text: "harapanku", amount: 3434 },
+//   { id: 12345, text: "harapanku", amount: -23 },
+//   { id: 5675, text: "harapanku", amount: -23 },
+//   { id: 567, text: "harapanku", amount: -23 },
+//   { id: 1223, text: "harapanku", amount: 200 },
+//   { id: 4444, text: "harapanku", amount: -300 },
+//   { id: 5555, text: "harapanku", amount: 3434 },
+//   { id: 1111, text: "harapanku", amount: -23 },
+//   { id: 6666, text: "harapanku", amount: -23 },
+//   { id: 88, text: "harapanku", amount: -23 },
+// ]);
+
+const transactions = ref([{ id: 1223, text: "harapanku", amount: 200 }]);
 const showModal = ref(false);
 
 const total = computed(() => {
@@ -37,7 +52,7 @@ const expense = computed(() => {
 
 function handleAddTransaction(transactionData) {
   transactions.value.push(transactionData);
-  saveToLocalStorage();
+  // saveToLocalStorage();
   handleCloseModal();
   toast.success("New Transaction added", { timeout: 1500 });
 }
@@ -46,7 +61,7 @@ function handleDeleteTransaction(transactionId) {
   transactions.value = transactions.value.filter(
     (transaction) => transaction.id !== transactionId,
   );
-  saveToLocalStorage();
+  // saveToLocalStorage();
   toast.success("Transaction deleted", { timeout: 1500 });
 }
 
@@ -58,16 +73,14 @@ function saveToLocalStorage() {
   localStorage.setItem("transactions", JSON.stringify(transactions.value));
 }
 
-onMounted(() => {
-  const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
-  if (savedTransactions) transactions.value = savedTransactions;
-});
+// onMounted(() => {
+//   const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
+//   if (savedTransactions) transactions.value = savedTransactions;
+// });
 </script>
 
 <template>
-  <div
-    class="flex min-h-screen flex-col items-center justify-center bg-slate-100"
-  >
+  <div class="flex min-h-screen flex-col items-center bg-slate-100 pt-16">
     <div class="mx-auto w-full max-w-sm">
       <Header />
       <Balance :total="total" />
